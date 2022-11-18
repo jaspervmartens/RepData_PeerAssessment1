@@ -8,7 +8,8 @@ output:
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 # Reading data
 activity <- read.csv("activity.csv")
 
@@ -18,22 +19,39 @@ activity$date <- as.Date(activity$date)
 
 
 ## What is the mean total number of steps taken per day?
-```{r}
+
+```r
 # Calculating steps per day
 stepsperday <- tapply(activity$steps, activity$date, sum)
 
 # Making histogram of steps per day
 hist(stepsperday)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+```r
 # Calculating mean and median steps per day
 meanstepsperday <- mean(stepsperday, na.rm = TRUE)
 print(paste("Mean steps per day:", round(meanstepsperday, digits=2)))
+```
+
+```
+## [1] "Mean steps per day: 10766.19"
+```
+
+```r
 medianstepsperday <- median(stepsperday, na.rm = TRUE)
 print(paste("Median steps per day:", medianstepsperday))
 ```
 
+```
+## [1] "Median steps per day: 10765"
+```
+
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 # Calculating average steps per 5 minute increment over all days
 stepsovertime <- tapply(activity$steps, activity$interval, mean, na.rm = TRUE)
 
@@ -41,18 +59,33 @@ stepsovertime <- tapply(activity$steps, activity$interval, mean, na.rm = TRUE)
 # Why does this dataset have 2400 minutes per day??
 plot(unique(activity$interval), stepsovertime, type="l",
      main="Average number of steps per 5 minutes" , xlab="Interval", ylab="Number of steps")
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+```r
 # Determine interval with highest average number of steps
 mostactiveinterval <- names(stepsovertime[stepsovertime == max(stepsovertime)])
 print(paste("Interval with most average steps:", mostactiveinterval))
 ```
 
+```
+## [1] "Interval with most average steps: 835"
+```
+
 ## Imputing missing values
-```{r}
+
+```r
 # Determining number of missing values
 missingvalues <- sum(is.na(activity$steps))
 print(paste("Number of missing values in steps column:", missingvalues))
+```
 
+```
+## [1] "Number of missing values in steps column: 2304"
+```
+
+```r
 # Making new dataset version
 activity2 <- activity
 
@@ -68,16 +101,32 @@ stepsperday2 <- tapply(activity2$steps, activity2$date, sum)
 
 # Making histogram of steps per day
 hist(stepsperday2)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+```r
 # Calculating mean and median steps per day
 meanstepsperday2 <- mean(stepsperday2, na.rm = TRUE)
 print(paste("Mean steps per day:", round(meanstepsperday2, digits=2)))
+```
+
+```
+## [1] "Mean steps per day: 10766.19"
+```
+
+```r
 medianstepsperday2 <- median(stepsperday2, na.rm = TRUE)
 print(paste("Median steps per day:", medianstepsperday2))
 ```
 
+```
+## [1] "Median steps per day: 10766.1886792453"
+```
+
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 # Making new dataset version
 activity3 <- activity2
 
@@ -106,3 +155,5 @@ plot(unique(activity3$interval), stepsovertimeweekdays, type="l",
 plot(unique(activity3$interval), stepsovertimeweekends, type="l",
      main="Average number of steps per 5 minutes on weekends", xlab="Interval", ylab="Number of steps")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
